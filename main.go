@@ -11,7 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 
 )
 
@@ -24,12 +23,11 @@ func main() {
 	r := gin.Default()
 	r.POST("/check", handle)
 	r.Run(":8000")
-
 }
 
 func handle(c *gin.Context) {
 
-=	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
 	if err != nil {
@@ -40,10 +38,6 @@ func handle(c *gin.Context) {
 			panic(err)
 		}
 	}()
-	if err := client.Ping(ctx, readpref.Primary()); err != nil {
-		panic(err)
-	}
-	fmt.Println("Successfully connected and pinged.")
 
 	var result Result
 	c.Bind(&result)
@@ -59,7 +53,7 @@ func handle(c *gin.Context) {
 		log.Fatal(err)
 	}
 	c.JSON(200, result)
-	fmt.Println("Document %v added successfully ", *res)
+	fmt.Println("\nInserted ID: ", *res)
 
 }
 
