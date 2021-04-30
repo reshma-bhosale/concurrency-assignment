@@ -53,7 +53,7 @@ func handle(c *gin.Context) {
 		log.Fatal(err)
 	}
 	c.JSON(200, result)
-	fmt.Println("Document %v added successfully ", *res)
+	fmt.Println("\nInserted ID: ", *res)
 
 }
 
